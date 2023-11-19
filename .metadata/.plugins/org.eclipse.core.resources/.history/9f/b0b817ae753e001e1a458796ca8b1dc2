@@ -1,0 +1,93 @@
+package org.jsp.userbootapp.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.jsp.userbootapp.dao.ProductDao;
+import org.jsp.userbootapp.dao.UserDao;
+import org.jsp.userbootapp.dto.Product;
+import org.jsp.userbootapp.dto.ResponseStructure;
+import org.jsp.userbootapp.dto.User;
+import org.jsp.userbootapp.exception.IdNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ProductService {
+	@Autowired
+	private ProductDao dao;
+	
+	@Autowired
+	private UserDao userDao;
+	
+	public ResponseEntity<ResponseStructure<Product>> saveProduct(Product product,int user_id) {
+		Optional<User> recUser = userDao.findById(user_id);
+		ResponseStructure<Product> structure = new ResponseStructure<>();
+		if(recUser.isPresent()) {			
+			User u = recUser.get();
+			u.getProducts().add(product);
+			product.setUser(recUser.get());;
+			userDao.updateUser(recUser.get());
+			dao.saveProduct(product);
+			structure.setData(product);
+			structure.setMessage("product added successfully");
+			structure.setStatusCode(HttpStatus.CREATED.value());
+			return new ResponseEntity<ResponseStructure<Product>>(structure,HttpStatus.CREATED);
+		}
+		throw new IdNotFoundException();
+		
+	}
+	
+	public ResponseEntity<ResponseStructure<Product>> updateProduct(Product product,int user_id) {
+		Optional<User> recUser = userDao.findById(user_id);
+		ResponseStructure<Product> structure = new ResponseStructure<>();
+		if(recUser.isPresent()) {			
+  			product.setUser(recUser.get());;
+ 			dao.saveProduct(product);
+			structure.setData(product);
+			structure.setMessage("product added successfully");
+			structure.setStatusCode(HttpStatus.ACCEPTED.value());
+			return new ResponseEntity<ResponseStructure<Product>>(structure,HttpStatus.ACCEPTED);
+ 			
+		}
+		throw new IdNotFoundException();
+	}
+
+	public ResponseEntity<ResponseStructure<Product>> findById(int id) {
+		Optional<Product> recProduct = dao.findById(id);
+		ResponseStructure<Product> structure = new ResponseStructure<>();
+		if(recProduct.isPresent()) {			
+ 			structure.setData(recProduct.get());
+			structure.setMessage("product found");
+			structure.setStatusCode(HttpStatus.OK.value());
+			return new ResponseEntity<ResponseStructure<Product>>(structure,HttpStatus.OK);
+ 			
+		}
+		throw new IdNotFoundException();
+	}
+	
+	public ResponseEntity<ResponseStructure<String>> deleteProduct(int id) {
+		Optional<Product> recProduct = dao.findById(id);
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		if(recProduct.isPresent()) {	
+			dao.deleteProduct(id);
+ 			structure.setData("Product deleted");
+			structure.setMessage("product found");
+			structure.setStatusCode(HttpStatus.OK.value());
+			return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.OK);
+ 			
+		}
+		throw new IdNotFoundException();
+	}
+	
+	public ResponseEntity<ResponseStructure<List<Product>>> findProductsByUSerId(int user_id) {
+		ResponseStructure<List<Product>> structure = new ResponseStructure<>();
+		structure.setData(dao.findProductsByUserId(user_id));
+		structure.setMessage("Products found by user id");
+		structure.setStatusCode(HttpStatus.OK.value());
+		return new ResponseEntity<ResponseStructure<List<Product>>>(structure,HttpStatus.OK);
+	}
+
+}

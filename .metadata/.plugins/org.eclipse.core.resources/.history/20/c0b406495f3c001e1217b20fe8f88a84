@@ -1,0 +1,5 @@
+package org.jsp.userbootapp.dto;
+
+public class Product {
+
+}

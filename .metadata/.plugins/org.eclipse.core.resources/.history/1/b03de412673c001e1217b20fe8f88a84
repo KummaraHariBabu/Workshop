@@ -1,0 +1,29 @@
+package org.jsp.userbootapp.controller;
+
+import org.jsp.userbootapp.dto.Product;
+import org.jsp.userbootapp.dto.ResponseStructure;
+import org.jsp.userbootapp.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ProductController {
+	@Autowired
+	private ProductService service;
+	
+	@PostMapping("/products/{id}")
+	public ResponseEntity<ResponseStructure<Product>> saveProduct(@RequestBody Product product,@PathVariable int id) {
+		return service.saveProduct(product, id);
+	}
+	@PutMapping("/products/{id}")
+	public ResponseEntity<ResponseStructure<Product>> updateProduct(@RequestBody Product product,@PathVariable int id) {
+		return service.saveProduct(product, id);
+	}
+	
+	
+
+}

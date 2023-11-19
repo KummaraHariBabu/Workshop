@@ -1,0 +1,5 @@
+package org.jsp.userbootapp.dao;
+
+public class ProductDao {
+
+}
