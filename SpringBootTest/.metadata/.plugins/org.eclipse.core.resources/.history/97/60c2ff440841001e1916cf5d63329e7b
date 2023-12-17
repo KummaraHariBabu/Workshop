@@ -1,5 +1,0 @@
-package org.jsp.springboottest.repository;
-
-public class RideRepository {
-
-}

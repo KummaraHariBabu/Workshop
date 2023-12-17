@@ -1,7 +1,0 @@
-package org.jsp.springboottest.dto;
-
-public class Drive {
-	private int id;
-	private St
-
-}

@@ -1,7 +1,0 @@
-package org.jsp.springboottest.dto;
-
-public class Bike {
-	private int id;
-	private St
-
-}
