@@ -1,0 +1,37 @@
+package org.jsp.springboottest.dao;
+
+import java.util.Optional;
+
+import org.jsp.springboottest.dto.Bike;
+import org.jsp.springboottest.repository.BikeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class BikeDao {
+	@Autowired
+	private BikeRepository repository;
+	
+	public Bike saveBike(Bike bike) {
+		return repository.save(bike);
+	}
+	public Bike updateBike(Bike bike) {
+		return repository.save(bike);
+	}
+	public Bike findById(int id) {
+		Optional<Bike> recBike = repository.findById(id);
+	if(recBike.isPresent()) {
+		return recBike.get();
+	}
+	return null;
+	}
+	public boolean deleteBike(int id) {
+		Optional<Bike> recBike = repository.findById(id);
+	if(recBike.isPresent()) {
+		 repository.delete(recBike.get());
+		 return true;
+	}
+	return false;
+	}
+
+}

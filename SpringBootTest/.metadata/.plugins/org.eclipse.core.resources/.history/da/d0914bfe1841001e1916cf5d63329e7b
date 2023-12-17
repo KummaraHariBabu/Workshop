@@ -1,0 +1,79 @@
+package org.jsp.springboottest.service;
+
+import java.util.Optional;
+
+import org.jsp.springboottest.dao.BikeDao;
+import org.jsp.springboottest.dto.Bike;
+import org.jsp.springboottest.dto.ResponseStructure;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+@Service
+public class BikeService {
+	@Autowired
+	private BikeDao dao;
+	
+
+ 	public ResponseEntity<ResponseStructure<Bike>> saveBike( Bike bike) {
+		ResponseStructure<Bike> structure = new ResponseStructure<>();
+		structure.setData(dao.saveBike(bike));
+		structure.setMessage("bike saved with id " + bike.getId());
+		structure.setStatuscode(HttpStatus.CREATED.value());
+		return new ResponseEntity<ResponseStructure<Bike>>(structure, HttpStatus.CREATED);
+	}
+
+	
+	@PutMapping("/bike")
+	public ResponseEntity<ResponseStructure<Bike>> updateBike(  Bike bike) {
+		ResponseStructure<Bike> structure = new ResponseStructure<>();
+		structure.setData(dao.updateBike(bike));
+		structure.setMessage("Bike is updated with id "+bike.getId());
+		structure.setStatuscode(HttpStatus.ACCEPTED.value());
+		return new ResponseEntity<ResponseStructure<Bike>>(structure,HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping("/bike/{id}")
+	public ResponseEntity<ResponseStructure<Bike>> findById( int id) {
+		Optional<Bike> recBike = dao.findById(id);
+		ResponseStructure< Bike> s = new ResponseStructure<>();
+		if(recBike.isPresent()) {
+			s.setData(recBike.get());
+			s.setMessage("fetch by id");
+			s.setStatuscode(HttpStatus.OK.value());
+			return new ResponseEntity<ResponseStructure<Bike>>(s,HttpStatus.OK);
+		}
+		else {
+			s.setData(null);
+			s.setMessage("not found");
+			s.setStatuscode(HttpStatus.NOT_FOUND.value());
+			return new ResponseEntity<ResponseStructure<Bike>>(s,HttpStatus.NOT_FOUND);		}
+	}
+	
+	@DeleteMapping("/bike/{id}")
+	public ResponseEntity<ResponseStructure<String>> deleteBike(@PathVariable int id) {
+		Optional<Bike> b = repository.findById(id);
+		ResponseStructure< String> s = new ResponseStructure<>();
+		if(b.isPresent()) {
+			s.setData(null);
+			s.setMessage("bike is deleted!");
+			s.setStatuscode(HttpStatus.OK.value());
+			return new ResponseEntity<ResponseStructure<String>>(s,HttpStatus.OK);
+
+ 		}
+		else {
+			s.setData(null);
+			s.setMessage("bike not found!");
+			s.setStatuscode(HttpStatus.NOT_FOUND.value());
+			return new ResponseEntity<ResponseStructure<String>>(s,HttpStatus.NOT_FOUND);
+		}
+ 	}
+
+}

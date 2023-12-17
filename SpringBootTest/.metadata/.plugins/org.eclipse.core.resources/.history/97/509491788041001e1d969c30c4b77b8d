@@ -1,0 +1,96 @@
+package org.jsp.springboottest.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.jsp.springboottest.dao.BikeDao;
+import org.jsp.springboottest.dto.Bike;
+import org.jsp.springboottest.dto.ResponseStructure;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
+
+@Service
+public class BikeService {
+	@Autowired
+	private BikeDao dao;
+	
+
+ 	public ResponseEntity<ResponseStructure<Bike>> saveBike( Bike bike) {
+		ResponseStructure<Bike> structure = new ResponseStructure<>();
+		structure.setData(dao.saveBike(bike));
+		structure.setMessage("bike saved with id " + bike.getId());
+		structure.setStatuscode(HttpStatus.CREATED.value());
+		return new ResponseEntity<ResponseStructure<Bike>>(structure, HttpStatus.CREATED);
+	}
+
+	
+ 	public ResponseEntity<ResponseStructure<Bike>> updateBike(  Bike bike) {
+		ResponseStructure<Bike> structure = new ResponseStructure<>();
+		structure.setData(dao.updateBike(bike));
+		structure.setMessage("Bike is updated with id "+bike.getId());
+		structure.setStatuscode(HttpStatus.ACCEPTED.value());
+		return new ResponseEntity<ResponseStructure<Bike>>(structure,HttpStatus.ACCEPTED);
+	}
+	
+ 	public ResponseEntity<ResponseStructure<Bike>> findById( int id) {
+		Optional<Bike> recBike = dao.findById(id);
+		ResponseStructure< Bike> s = new ResponseStructure<>();
+		if(recBike.isPresent()) {
+			s.setData(recBike.get());
+			s.setMessage("fetch by id");
+			s.setStatuscode(HttpStatus.OK.value());
+			return new ResponseEntity<ResponseStructure<Bike>>(s,HttpStatus.OK);
+		}
+		else {
+			s.setData(null);
+			s.setMessage("not found");
+			s.setStatuscode(HttpStatus.NOT_FOUND.value());
+			return new ResponseEntity<ResponseStructure<Bike>>(s,HttpStatus.NOT_FOUND);		}
+	}
+	
+ 	public ResponseEntity<ResponseStructure<String>> deleteBike(  int id) {
+		Optional<Bike> b = dao.findById(id);
+		ResponseStructure< String> s = new ResponseStructure<>();
+		if(b.isPresent()) {
+			s.setData("bike found");
+			s.setMessage("bike is deleted!");
+			s.setStatuscode(HttpStatus.OK.value());
+			return new ResponseEntity<ResponseStructure<String>>(s,HttpStatus.OK);
+
+ 		}
+		else {
+			s.setData(null);
+			s.setMessage("bike not found!");
+			s.setStatuscode(HttpStatus.NOT_FOUND.value());
+			return new ResponseEntity<ResponseStructure<String>>(s,HttpStatus.NOT_FOUND);
+		}
+ 	}
+ 	
+ 	public ResponseEntity<ResponseStructure<List<Bike>>> findAll() {
+ 		ResponseStructure<List<Bike>> s = new ResponseStructure<>();
+ 		s.setData(dao.findAll());
+ 		s.setMessage("all bike's data");
+ 		s.setStatuscode(HttpStatus.OK.value());
+		return new ResponseEntity<ResponseStructure<List<Bike>>>(s,HttpStatus.OK);
+ 		
+  	}
+ 	
+ 	public ResponseEntity<ResponseStructure<Bike>> verifyBike(String model,String name) {
+ 		ResponseStructure<Bike> s = new ResponseStructure<>();
+ 		Optional<Bike> b = dao.verifyBike(model, name);
+ 		if(b.isPresent()) {
+ 			s.setData(b.get());
+ 	 		s.setMessage("bike verified successfully");
+ 	 		s.setStatuscode(HttpStatus.OK.value());
+ 			return new ResponseEntity<ResponseStructure<Bike>>(s,HttpStatus.OK);
+ 		}
+ 		s.setData(null);
+		s.setMessage("invalid");
+		s.setStatuscode(HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<ResponseStructure<Bike>>(s,HttpStatus.NOT_FOUND);	
+ 	}
+
+}

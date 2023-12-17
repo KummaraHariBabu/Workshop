@@ -1,0 +1,43 @@
+package org.jsp.springboottest.controller;
+
+import java.util.Optional;
+
+import org.jsp.springboottest.dto.Bike;
+import org.jsp.springboottest.dto.ResponseStructure;
+import org.jsp.springboottest.repository.BikeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class BikeController {
+	@Autowired
+	private BikeRepository repository;
+
+	@PostMapping("/bike")
+	public ResponseEntity<ResponseStructure<Bike>> saveBike(@RequestBody Bike bike) {
+		ResponseStructure<Bike> structure = new ResponseStructure<>();
+		structure.setData(repository.save(bike));
+		structure.setMessage("bike saved with id " + bike.getId());
+		structure.setStatuscode(HttpStatus.CREATED.value());
+		return new ResponseEntity<ResponseStructure<Bike>>(structure, HttpStatus.CREATED);
+	}
+
+	
+
+	public ResponseEntity<ResponseStructure<Bike>> updateBike(@RequestBody Bike bike) {
+		ResponseStructure<Bike> structure = new ResponseStructure<>();
+		structure.setData(repository.save(bike));
+		structure.setMessage("Bike is updated with id "+bike.getId());
+		structure.setStatuscode(HttpStatus.ACCEPTED.value());
+		return new ResponseEntity<ResponseStructure<Bike>>(structure,HttpStatus.ACCEPTED);
+	}
+
+}

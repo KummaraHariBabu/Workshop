@@ -1,0 +1,23 @@
+package org.jsp.springboottest.service;
+
+import org.jsp.springboottest.dao.MerchantDao;
+import org.jsp.springboottest.dto.Merchant;
+import org.jsp.springboottest.dto.ResponseStructure;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MerchantService {
+	@Autowired
+	private MerchantDao dao;
+	
+	public ResponseEntity<ResponseStructure<Merchant>> saveMerchant(Merchant merchant) {
+		ResponseStructure<Merchant> structure = new ResponseStructure<>();
+		structure.
+		
+		
+	}
+	
+
+}

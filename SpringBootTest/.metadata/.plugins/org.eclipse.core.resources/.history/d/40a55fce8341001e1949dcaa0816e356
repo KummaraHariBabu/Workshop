@@ -1,0 +1,9 @@
+package org.jsp.springboottest.dto;
+
+public class Product {
+	private int id;
+	private String name,brand,description;
+	private double cost;
+	private String imageurl;
+
+}

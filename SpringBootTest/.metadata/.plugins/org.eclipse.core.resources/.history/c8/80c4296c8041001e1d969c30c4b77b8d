@@ -1,0 +1,23 @@
+package org.jsp.springboottest.dao;
+
+import java.util.List;
+
+import org.jsp.springboottest.dto.Ride;
+import org.jsp.springboottest.repository.RideRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class RideDao {
+	@Autowired
+	private RideRepository rep;
+	
+	public Ride saveRide(Ride r) {
+		return rep.save(r);
+	}
+
+	public List<Ride> findRidesByBikeID(int id) {
+ 		return rep.findRidesByBikeID(id);
+	}
+
+}

@@ -1,0 +1,21 @@
+package org.jsp.springboottest.service;
+
+import org.jsp.springboottest.dao.MerchantDao;
+import org.jsp.springboottest.dao.ProductDao;
+import org.jsp.springboottest.dto.Product;
+import org.jsp.springboottest.dto.ResponseStructure;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
+public class ProductService {
+	@Autowired
+	private ProductDao dao;
+	
+	@Autowired
+	private MerchantDao mdao;
+	
+	public ResponseEntity<ResponseStructure<Product>> saveProduct(Product p , int merchant_id) {
+		
+	}
+
+}

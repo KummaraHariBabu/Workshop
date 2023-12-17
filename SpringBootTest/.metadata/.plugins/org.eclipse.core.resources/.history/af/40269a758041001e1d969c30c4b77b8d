@@ -1,0 +1,15 @@
+package org.jsp.springboottest.repository;
+
+import java.util.Optional;
+
+import org.jsp.springboottest.dto.Bike;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+public interface BikeRepository extends JpaRepository<Bike, Integer> {
+	@Query("select b from Bike b where b.model=?1 and b.name=?2")
+	Optional<Bike> verifyBike(String model,String name);
+	
+	
+
+}

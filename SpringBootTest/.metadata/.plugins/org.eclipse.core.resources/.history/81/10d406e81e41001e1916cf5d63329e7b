@@ -1,0 +1,57 @@
+package org.jsp.springboottest.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.jsp.springboottest.dto.Bike;
+import org.jsp.springboottest.dto.ResponseStructure;
+import org.jsp.springboottest.repository.BikeRepository;
+import org.jsp.springboottest.service.BikeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class BikeController {
+	@Autowired
+	private BikeService service ;
+	
+	@PostMapping("/bike")
+	public ResponseEntity<ResponseStructure<Bike>> saveBike(@RequestBody Bike bike) {
+		return service.saveBike(bike);
+	}
+	
+	@PutMapping("/bike")
+	public ResponseEntity<ResponseStructure<Bike>> updateBike(@RequestBody Bike bike) {
+		return service.updateBike(bike);
+	}
+	
+	@GetMapping("/bike/{id}")
+	public ResponseEntity<ResponseStructure<Bike>> findById(@PathVariable int id) {
+		return service.findById(id);
+	}
+	
+	@DeleteMapping("/bike/{id}")
+	public ResponseEntity<ResponseStructure<String>> deleteBike(@PathVariable int id) {
+		return service.deleteBike(id);
+	}
+	
+	@GetMapping("/bike")
+	public ResponseEntity<ResponseStructure<List<Bike>>> findAll() {
+		return service.findAll();
+	}
+	@GetMapping("/bike/verifybymodel")
+	public ResponseEntity<ResponseStructure<Bike>> verifyBike(@RequestParam String model,@RequestParam String name) {
+		return service.verifyBike(model, name);
+	}
+
+
+}

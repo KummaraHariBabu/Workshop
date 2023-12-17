@@ -1,0 +1,40 @@
+package org.jsp.springboottest.controller;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.catalina.User;
+import org.jsp.springboottest.dto.Bike;
+import org.jsp.springboottest.dto.Ride;
+import org.jsp.springboottest.repository.BikeRepository;
+import org.jsp.springboottest.repository.RideRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class RideController {
+	@Autowired
+	private RideRepository repository;
+	@Autowired
+	private BikeRepository bike;
+	
+	@PostMapping("/ride/{bike_id}")
+	public  Ride saveRide(@RequestBody Ride ride,@PathVariable int bike_id) {
+		Optional<Bike> b = bike.findById(bike_id);
+ 		if(b.isPresent()) {
+			Bike bk = new Bike(); 
+			bk.getRide().add(ride);
+			ride.setBike(b.get());
+  		}
+		return ride;
+  		
+		
+  	}
+	
+	
+	
+
+}

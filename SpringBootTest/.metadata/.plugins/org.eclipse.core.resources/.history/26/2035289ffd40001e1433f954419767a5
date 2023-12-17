@@ -1,0 +1,6 @@
+package org.jsp.springboottest.dto;
+
+public class User {
+	private int id;
+
+}
